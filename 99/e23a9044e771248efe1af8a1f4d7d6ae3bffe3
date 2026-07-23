@@ -1,0 +1,23 @@
+packages/telescope/__tests__/baselineCssExtract.test.ts
+  s_791db1d87a2ecf::t_7870d00c62a45f 4-5,12,31,55
+packages/telescope/src/baselineCssExtract.ts
+  s_791db1d87a2ecf::t_6695612a0eeeab 1-2,40-42
+packages/telescope/src/types.ts
+  s_791db1d87a2ecf::t_2d911598d0baab 559-569,586
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "99e23a9044e771248efe1af8a1f4d7d6ae3bffe3",
+  "prompts": {},
+  "sessions": {
+    "s_791db1d87a2ecf": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_070be905fffegXUC0dBob6e3hQ",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sloan Snedden <sloan@cloudflare.com>"
+    }
+  }
+}
