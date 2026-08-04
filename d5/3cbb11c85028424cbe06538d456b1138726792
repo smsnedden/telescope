@@ -1,0 +1,19 @@
+packages/telescope/__tests__/baselineStatus.test.ts
+  s_ee6b7cc5bba708::t_609f3b1d96004f 66-81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "d53cbb11c85028424cbe06538d456b1138726792",
+  "prompts": {},
+  "sessions": {
+    "s_ee6b7cc5bba708": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_05b0f9361ffetZoo2fVwA6l2dB",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sloan Snedden <sloan@cloudflare.com>"
+    }
+  }
+}
