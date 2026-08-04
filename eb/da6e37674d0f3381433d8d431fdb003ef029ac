@@ -1,0 +1,19 @@
+packages/telescope/src/baselineHtmlDetect.ts
+  s_a81be25ac34f00::t_e6c342307f1b46 73-77,80-81,91,100-105,117-119,141,143-146,161
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "ebda6e37674d0f3381433d8d431fdb003ef029ac",
+  "prompts": {},
+  "sessions": {
+    "s_a81be25ac34f00": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_05beec3f9ffeEunIhMFHt4N7zz",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Sloan Snedden <sloan@cloudflare.com>"
+    }
+  }
+}
