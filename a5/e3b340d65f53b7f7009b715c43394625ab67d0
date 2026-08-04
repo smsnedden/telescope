@@ -1,0 +1,21 @@
+packages/telescope/__tests__/baseline.test.ts
+  s_6a16f40e61759c::t_4f5ee19b46eba9 1-116
+packages/telescope/src/packageVersion.ts
+  s_6a16f40e61759c::t_79e5b88a33c51a 1-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "a5e3b340d65f53b7f7009b715c43394625ab67d0",
+  "prompts": {},
+  "sessions": {
+    "s_6a16f40e61759c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_06a783dc2ffeV7NvTjyRieICRF",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Sloan Snedden <sloan@cloudflare.com>"
+    }
+  }
+}
