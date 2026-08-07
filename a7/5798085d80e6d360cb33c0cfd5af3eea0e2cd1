@@ -1,0 +1,21 @@
+package-lock.json
+  s_49ccea00a834c8::t_88849740ff3db1 2618-2624,10962
+packages/telescope/src/baselineHtmlBcd.ts
+  s_49ccea00a834c8::t_ee38bcb7ffef10 1-43,191-222
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "a75798085d80e6d360cb33c0cfd5af3eea0e2cd1",
+  "prompts": {},
+  "sessions": {
+    "s_49ccea00a834c8": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_023404c62ffeT8Tksb6DMC1vEU",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Sloan Snedden <sloan@cloudflare.com>"
+    }
+  }
+}
