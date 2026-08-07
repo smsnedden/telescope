@@ -364,6 +364,21 @@ class TestRunner {
   }
 
   /**
+   * Applies content-affecting request routing to a Baseline detection page.
+   * Response delays are intentionally omitted because the detection pass does
+   * not collect performance measurements.
+   */
+  async prepareBaselineDetectionPage(page: Page): Promise<void> {
+    if (
+      this.options.overrideHost &&
+      Object.keys(this.options.overrideHost).length > 0
+    ) {
+      await this.setupHostOverrides(page, this.options.overrideHost);
+    }
+    await this.setupBlocking(page);
+  }
+
+  /**
    * Prepares the context by kicking off anything that needs to be attached at the context level
    */
   async prepareContext(context: BrowserContext): Promise<void> {
@@ -777,18 +792,7 @@ class TestRunner {
               browserConfig: this.selectedBrowser,
               cookies: this.options.cookies,
               headers: this.options.headers,
-              preparePage: async page => {
-                if (
-                  this.options.overrideHost &&
-                  Object.keys(this.options.overrideHost).length > 0
-                ) {
-                  await this.setupHostOverrides(
-                    page,
-                    this.options.overrideHost,
-                  );
-                }
-                await this.setupBlocking(page);
-              },
+              preparePage: page => this.prepareBaselineDetectionPage(page),
               timeout: this.options.timeout ?? DEFAULT_OPTIONS.timeout,
               url: this.testURL,
             }),

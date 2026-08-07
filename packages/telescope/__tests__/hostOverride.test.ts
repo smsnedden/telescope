@@ -162,4 +162,40 @@ describe('setupHostOverrides', () => {
       expect(hostOverrideMatchers(page)).toHaveLength(1);
     });
   });
+
+  describe('via prepareBaselineDetectionPage', () => {
+    test('registers host overrides and blocking without response delays', async () => {
+      const runner = buildRunner({
+        block: ['tracker'],
+        blockDomains: ['ads.example.com'],
+        delay: { analytics: 100 },
+        delayUsing: 'fulfill',
+        overrideHost: { 'example.com': '127.0.0.1:8080' },
+      });
+
+      await runner.prepareBaselineDetectionPage(asPage(page));
+
+      const matchers = page.route.mock.calls.map(
+        call => (call as unknown[])[0],
+      );
+      expect(
+        matchers.filter(matcher => typeof matcher === 'function'),
+      ).toHaveLength(1);
+      expect(
+        matchers.filter(matcher => matcher instanceof RegExp),
+      ).toHaveLength(2);
+      const regexSources = matchers
+        .filter((matcher): matcher is RegExp => matcher instanceof RegExp)
+        .map(matcher => matcher.source);
+      expect(
+        regexSources.some(source => source.includes('ads.example.com')),
+      ).toBe(true);
+      expect(regexSources.some(source => source.includes('tracker'))).toBe(
+        true,
+      );
+      expect(regexSources.some(source => source.includes('analytics'))).toBe(
+        false,
+      );
+    });
+  });
 });

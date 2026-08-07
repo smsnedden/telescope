@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { extractCSSFromHar } from './baselineCssExtract.js';
+import { formatBaselineError } from './baselineError.js';
 import { getPackageVersion } from './packageVersion.js';
 import type {
   BaselineDetectionPassResult,
@@ -11,7 +12,6 @@ import type {
 } from './types.js';
 
 export const BASELINE_SCHEMA_VERSION = 1;
-const URL_IN_ERROR_PATTERN = /https?:\/\/[^\s"'<>]+/gi;
 
 /**
  * Writes a JSON artifact beneath the results baseline directory.
@@ -65,7 +65,7 @@ export async function runBaselinePipeline(
   try {
     detectionResult = await options.runDetectionPass();
   } catch (error) {
-    console.warn(`[baseline] - detection-pass: ${formatDetectionError(error)}`);
+    console.warn(`[baseline] - detection-pass: ${formatBaselineError(error)}`);
   }
   const cssSources = [
     ...extractCSSFromHar(harData),
@@ -77,14 +77,4 @@ export async function runBaselinePipeline(
     'detection/css-sources.json',
     cssSources.map(({ css, file }) => ({ css, file })),
   );
-}
-
-function formatDetectionError(error: unknown): string {
-  const errorName = error instanceof Error ? error.name : 'UnknownError';
-  const message = error instanceof Error ? error.message : String(error);
-  return `${redactURLs(errorName)}: ${redactURLs(message)}`;
-}
-
-function redactURLs(value: string): string {
-  return value.replace(URL_IN_ERROR_PATTERN, '[redacted URL]');
 }

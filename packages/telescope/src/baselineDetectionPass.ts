@@ -1,6 +1,7 @@
 import playwright from 'playwright';
 
 import { harvestInlineStyles } from './baselineCssExtract.js';
+import { formatBaselineError } from './baselineError.js';
 import type {
   BaselineDetectionPassOptions,
   BaselineDetectionPassResult,
@@ -76,11 +77,42 @@ export async function runBaselineDetectionPass(
         );
       }
 
-      return { inlineCSSSources: await harvestInlineStyles(page) };
+      const inlineCSSSources = await runCollector('inline-css', [], () =>
+        harvestInlineStyles(page),
+      );
+      return { inlineCSSSources };
     } finally {
-      await context.close();
+      await closeSafely('context', () => context.close());
     }
   } finally {
-    await browser.close();
+    await closeSafely('browser', () => browser.close());
+  }
+}
+
+async function runCollector<T>(
+  name: string,
+  fallback: T,
+  collect: () => Promise<T>,
+): Promise<T> {
+  try {
+    return await collect();
+  } catch (error) {
+    console.warn(
+      `[baseline] - ${name}-collector: ${formatBaselineError(error)}`,
+    );
+    return fallback;
+  }
+}
+
+async function closeSafely(
+  name: string,
+  close: () => Promise<void>,
+): Promise<void> {
+  try {
+    await close();
+  } catch (error) {
+    console.warn(
+      `[baseline] - detection-${name}-cleanup: ${formatBaselineError(error)}`,
+    );
   }
 }
