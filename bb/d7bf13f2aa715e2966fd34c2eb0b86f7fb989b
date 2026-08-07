@@ -1,0 +1,19 @@
+packages/telescope/__tests__/hostOverride.test.ts
+  s_36b6e772b38d08::t_b26b2b8fc3115d 165-200
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "bbd7bf13f2aa715e2966fd34c2eb0b86f7fb989b",
+  "prompts": {},
+  "sessions": {
+    "s_36b6e772b38d08": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_022e1c96effecvGpqeAknWGPSj",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Sloan Snedden <sloan@cloudflare.com>"
+    }
+  }
+}
