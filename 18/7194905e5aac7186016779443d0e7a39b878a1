@@ -1,0 +1,19 @@
+packages/telescope/__tests__/baselineDetectionPass.test.ts
+  s_36b6e772b38d08::t_8b36f6a69e1e0d 1-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "187194905e5aac7186016779443d0e7a39b878a1",
+  "prompts": {},
+  "sessions": {
+    "s_36b6e772b38d08": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_022e1c96effecvGpqeAknWGPSj",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Sloan Snedden <sloan@cloudflare.com>"
+    }
+  }
+}
