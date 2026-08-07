@@ -1,10 +1,17 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
+import { extractCSSFromHar } from './baselineCssExtract.js';
 import { getPackageVersion } from './packageVersion.js';
-import type { BaselinePipelineOptions, JSONValue } from './types.js';
+import type {
+  BaselineDetectionPassResult,
+  BaselinePipelineOptions,
+  HarData,
+  JSONValue,
+} from './types.js';
 
 export const BASELINE_SCHEMA_VERSION = 1;
+const URL_IN_ERROR_PATTERN = /https?:\/\/[^\s"'<>]+/gi;
 
 /**
  * Writes a JSON artifact beneath the results baseline directory.
@@ -34,8 +41,8 @@ export function writeBaselineArtifact(
 /**
  * Runs the post-performance Baseline analysis pipeline.
  *
- * Detection and analysis stages will be added incrementally. The initial
- * pipeline writes only a run manifest to establish the artifact contract.
+ * Detection and analysis stages are added incrementally. The pipeline writes a
+ * run manifest and the CSS sources collected from the HAR and live DOM.
  *
  * @param options - Completed test URL and results location.
  */
@@ -50,4 +57,34 @@ export async function runBaselinePipeline(
   };
 
   writeBaselineArtifact(options.resultsPath, 'meta.json', meta);
+
+  const harData = JSON.parse(
+    readFileSync(path.join(options.resultsPath, 'pageload.har'), 'utf8'),
+  ) as HarData;
+  let detectionResult: BaselineDetectionPassResult = { inlineCSSSources: [] };
+  try {
+    detectionResult = await options.runDetectionPass();
+  } catch (error) {
+    console.warn(`[baseline] - detection-pass: ${formatDetectionError(error)}`);
+  }
+  const cssSources = [
+    ...extractCSSFromHar(harData),
+    ...detectionResult.inlineCSSSources,
+  ];
+
+  writeBaselineArtifact(
+    options.resultsPath,
+    'detection/css-sources.json',
+    cssSources.map(({ css, file }) => ({ css, file })),
+  );
+}
+
+function formatDetectionError(error: unknown): string {
+  const errorName = error instanceof Error ? error.name : 'UnknownError';
+  const message = error instanceof Error ? error.message : String(error);
+  return `${redactURLs(errorName)}: ${redactURLs(message)}`;
+}
+
+function redactURLs(value: string): string {
+  return value.replace(URL_IN_ERROR_PATTERN, '[redacted URL]');
 }

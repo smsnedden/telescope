@@ -56,7 +56,9 @@ import type {
   SavedConfig,
 } from './types.js';
 import type { BrowserContext, Page, Route, Request } from 'playwright';
+import { runBaselineDetectionPass } from './baselineDetectionPass.js';
 import { delayUsingFulfill, delayUsingContinue } from './delay.js';
+import { DEFAULT_OPTIONS } from './defaultOptions.js';
 import { runBaselinePipeline } from './baseline.js';
 
 const TELESCOPE_ID_HEADER = 'x-telescope-id';
@@ -769,6 +771,27 @@ class TestRunner {
     if (this.options.baseline) {
       try {
         await runBaselinePipeline({
+          runDetectionPass: () =>
+            runBaselineDetectionPass({
+              auth: this.options.auth,
+              browserConfig: this.selectedBrowser,
+              cookies: this.options.cookies,
+              headers: this.options.headers,
+              preparePage: async page => {
+                if (
+                  this.options.overrideHost &&
+                  Object.keys(this.options.overrideHost).length > 0
+                ) {
+                  await this.setupHostOverrides(
+                    page,
+                    this.options.overrideHost,
+                  );
+                }
+                await this.setupBlocking(page);
+              },
+              timeout: this.options.timeout ?? DEFAULT_OPTIONS.timeout,
+              url: this.testURL,
+            }),
           resultsPath: this.paths['results'],
           url: this.testURL,
         });

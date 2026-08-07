@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .inline {
+        color: green;
+      }
+    </style>
+    <script>
+      const style = document.createElement('style');
+      style.textContent = '.dynamic { display: grid; }';
+      document.head.append(style);
+    </script>
+  </head>
+  <body></body>
+</html>
